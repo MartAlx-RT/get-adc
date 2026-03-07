@@ -14,7 +14,7 @@ class R2R_ADC:
         GPIO.setup(self.bits_gpio, GPIO.OUT, initial = 0)
         GPIO.setup(self.comp_gpio, GPIO.IN)
     
-    def dec2bin(value):
+    def dec2bin(self, value):
         return [int(element) for element in bin(value)[2:].zfill(8)]
 
     def deinit(self):
@@ -22,7 +22,7 @@ class R2R_ADC:
         GPIO.cleanup()
     
     def number_to_dac(self, number):
-        GPIO.output(self.bits_gpio, [int(element) for element in bin(number)[2:].zfill(8)])
+        GPIO.output(self.bits_gpio, self.dec2bin(number))
 
     def sequential_counting_adc(self):
         max_value = 2**8 - 1  # 8bit
@@ -45,17 +45,22 @@ class R2R_ADC:
         result = 0
         curent_bit = 7
 
-        while(current_bit >= 0):
-            cmp = GPIO.input(self.compare_gpio)
+        while(curent_bit >= 0):
+            cmp = GPIO.input(self.comp_gpio)
 
             if(cmp > 0):
-                result -= 1 << curent_bit
+                result -= (1 << curent_bit)
             else:
-                result += 1 << curent_bit
+                result += (1 << curent_bit)
+            if result >= 256:
+                result = 255
+            if result < 0:
+                result = 0
+
             curent_bit -= 1
 
-        self.number_to_dac(result)
-        time.sleep(self.compare_time)
+            self.number_to_dac(result)
+            time.sleep(self.compare_time)
 
         return result * self.dynamic_range/255
 
