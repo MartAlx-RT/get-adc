@@ -41,6 +41,25 @@ class R2R_ADC:
 
         return max_value
 
+    def get_sar_voltage(self):
+        result = 0
+        curent_bit = 7
+
+        while(current_bit >= 0):
+            cmp = GPIO.input(self.compare_gpio)
+
+            if(cmp > 0):
+                result -= 1 << curent_bit
+            else:
+                result += 1 << curent_bit
+            curent_bit -= 1
+
+        self.number_to_dac(result)
+        time.sleep(self.compare_time)
+
+        return result * self.dynamic_range/255
+
+
     def get_sc_voltage(self):
             digital_value = self.sequential_counting_adc() 
 
@@ -60,7 +79,8 @@ if __name__ == "__main__":
         adc = R2R_ADC(3.292)
 
         while True:
-            voltage = adc.get_sc_voltage()
+            #voltage = adc.get_sc_voltage()
+            voltage = adc.get_sar_voltage()
             print(f"Измеренное напряжение: {voltage:.4f} В")
             time.sleep(0.1)  # pause
 
