@@ -45,6 +45,7 @@ class R2R_ADC:
         result = 0
         curent_bit = 7
 
+        time.sleep(self.compare_time)
         while(curent_bit >= 0):
             cmp = GPIO.input(self.comp_gpio)
 
