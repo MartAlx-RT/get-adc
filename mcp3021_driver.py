@@ -1,4 +1,5 @@
 import smbus
+import time
 
 class MCP3021:
     def __init__(self, dynamic_range, verbose = False):
@@ -25,7 +26,7 @@ class MCP3021:
 
 if __name__ == "__main__":
     try:
-        mcp = MCP3021(3.292)    # dynamic range
+        mcp = MCP3021(5.210)    # dynamic range
 
         while True:
             voltage = mcp.get_voltage()

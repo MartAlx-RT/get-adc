@@ -85,8 +85,8 @@ if __name__ == "__main__":
         adc = R2R_ADC(3.292)
 
         while True:
-            #voltage = adc.get_sc_voltage()
-            voltage = adc.get_sar_voltage()
+            voltage = adc.get_sc_voltage()
+            #voltage = adc.get_sar_voltage()
             print(f"Измеренное напряжение: {voltage:.4f} В")
             time.sleep(0.1)  # pause
 

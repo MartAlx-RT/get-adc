@@ -1,8 +1,8 @@
 import time
-import mcp3021_driver
+import mcp3021_driver as mcp_lib
 import adc_plot
 
-mcp = MCP3021(3.292)    # dynamic range
+mcp = mcp_lib.MCP3021(5.210)    # dynamic range
 voltage = []
 time_v = []
 ts = []
@@ -20,8 +20,6 @@ if __name__ == "__main__":
             ts.append(t)
             voltage.append(mcp.get_voltage())
             time_v.append(t)
-            #print(f"Измеренное напряжение: {voltage:.4f} В")
-            #time.sleep(0.1)  # pause
             t = time.time()-start_time
         
         adc_plot.plot_voltage_vs_time(time_v, voltage, 3.5)
